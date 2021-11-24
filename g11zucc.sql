@@ -10,10 +10,28 @@ Target Server Type    : MYSQL
 Target Server Version : 50556
 File Encoding         : 65001
 
-Date: 2021-11-18 19:39:18
+Date: 2021-11-24 18:51:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for choose
+-- ----------------------------
+DROP TABLE IF EXISTS `choose`;
+CREATE TABLE `choose` (
+  `choose_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '认领id',
+  `choose_wallid` int(11) NOT NULL COMMENT '表白墙id',
+  `choose_beuserid` varchar(10) NOT NULL COMMENT '被认领人',
+  `choose_userid` varchar(10) NOT NULL COMMENT '认领人',
+  `choose_state` int(11) NOT NULL COMMENT '认领状态，0未认领1认领',
+  `choose_time` datetime NOT NULL COMMENT '认领时间',
+  PRIMARY KEY (`choose_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of choose
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for collection
@@ -98,7 +116,7 @@ CREATE TABLE `wall` (
   `wall_contenttitle` varchar(10) NOT NULL COMMENT '表白墙标题',
   `wall_time` datetime NOT NULL COMMENT '表白墙发表时间',
   `wall_userid` varchar(10) NOT NULL COMMENT '发表该表白墙的用户',
-  `wall_state` varchar(10) NOT NULL COMMENT '表白墙状态，1正常2精选3置顶4冻结5删除',
+  `wall_state` int(10) NOT NULL COMMENT '表白墙状态，1正常2精选3删除',
   `wall_good` int(11) NOT NULL COMMENT '表白墙点赞数',
   `wall_collection` int(11) NOT NULL COMMENT '表白墙收藏数',
   `wall_talk` int(11) NOT NULL COMMENT '表白墙评论数',
