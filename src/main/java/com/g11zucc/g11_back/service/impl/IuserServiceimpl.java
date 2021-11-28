@@ -39,8 +39,8 @@ public class IuserServiceimpl extends ServiceImpl<userMapper, user>
                 .UserId(dto.getEmail())
                 .UserPwd(MD5Utils.getPwd(dto.getPass()))
                 .UserRegistertime(new Date())
-                .UserState(1)
-                .UserJurisdiction(1)
+                .UserState("正常")
+                .UserJurisdiction("正常11")
                 .build();
         baseMapper.insert(addUser);
 

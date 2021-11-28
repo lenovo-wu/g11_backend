@@ -50,19 +50,19 @@ public class user implements Serializable {
      * 用户状态，1为正常2为冷冻3为封禁
      */
     @TableField("user_state")
-    private int UserState;
+    private String UserState;
 
     /**
      * 用户性别，1男2女
      */
     @TableField("user_sex")
-    private int UserSex;
+    private String UserSex;
 
     /**
      * 用户权限，1普通用户2管理员
      */
     @TableField("user_jurisdiction")
-    private int UserJurisdiction;
+    private String UserJurisdiction;
 
     /**
      * 用户个性签名

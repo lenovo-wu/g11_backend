@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : booklib
+Source Server         : G11zucc
 Source Server Version : 50556
 Source Host           : localhost:3306
 Source Database       : g11zucc
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50556
 File Encoding         : 65001
 
-Date: 2021-11-24 18:51:43
+Date: 2021-11-28 16:10:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -94,9 +94,9 @@ CREATE TABLE `user` (
   `user_name` varchar(10) NOT NULL COMMENT '用户昵称',
   `user_pwd` varchar(10) NOT NULL COMMENT '用户密码',
   `user_registertime` datetime NOT NULL COMMENT '注册时间',
-  `user_state` int(11) NOT NULL COMMENT '用户状态，1正常，2冷冻，3封禁',
-  `user_sex` int(11) NOT NULL COMMENT '用户性别，1男2女',
-  `user_jurisdiction` int(11) NOT NULL COMMENT '用户权限，1普通用户2管理员',
+  `user_state` varchar(11) DEFAULT NULL COMMENT '正常，冷冻，封禁',
+  `user_sex` varchar(11) DEFAULT NULL COMMENT '男,女,未知',
+  `user_jurisdiction` varchar(11) DEFAULT NULL COMMENT '普通用户,管理员',
   `user_signature` varchar(100) DEFAULT '' COMMENT '个性签名',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -104,7 +104,9 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('31901209', 'Lenovo', '123456', '2021-11-18 18:47:19', '1', '1', '2', '');
+INSERT INTO `user` VALUES ('31901208', 'WYB', '111111', '2021-11-28 16:04:34', '正常', '男', '管理员', '');
+INSERT INTO `user` VALUES ('31901209', 'Lenovo', '123456', '2021-11-28 16:02:52', '正常', '男', '管理员', '');
+INSERT INTO `user` VALUES ('31901211', 'ZHJ', '123456', '2021-11-28 16:04:06', '正常', '男', '管理员', '');
 
 -- ----------------------------
 -- Table structure for wall
@@ -123,8 +125,9 @@ CREATE TABLE `wall` (
   `wall_report` int(11) NOT NULL COMMENT '表白墙举报数',
   `wall_to` varchar(10) DEFAULT NULL COMMENT '被表白对象',
   PRIMARY KEY (`wall_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wall
 -- ----------------------------
+INSERT INTO `wall` VALUES ('1', 'wwwwww', '1232123', '2021-11-28 15:43:08', '31901209', '1', '0', '0', '0', '0', 'wwww');
