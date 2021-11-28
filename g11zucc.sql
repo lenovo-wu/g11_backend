@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : G11zucc
+Source Server         : localhost_3306
 Source Server Version : 50556
 Source Host           : localhost:3306
 Source Database       : g11zucc
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50556
 File Encoding         : 65001
 
-Date: 2021-11-28 16:10:39
+Date: 2021-11-28 20:11:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,14 +24,17 @@ CREATE TABLE `choose` (
   `choose_wallid` int(11) NOT NULL COMMENT '表白墙id',
   `choose_beuserid` varchar(10) NOT NULL COMMENT '被认领人',
   `choose_userid` varchar(10) NOT NULL COMMENT '认领人',
-  `choose_state` int(11) NOT NULL COMMENT '认领状态，0未认领1认领',
+  `choose_state` varchar(11) NOT NULL COMMENT '认领状态，0未认领1认领',
   `choose_time` datetime NOT NULL COMMENT '认领时间',
   PRIMARY KEY (`choose_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of choose
 -- ----------------------------
+INSERT INTO `choose` VALUES ('1', '1', '31901209', '31901208', '已认领', '2021-11-28 20:09:02');
+INSERT INTO `choose` VALUES ('2', '2', '31901211', '31901209', '已认领', '2021-11-28 20:09:28');
+INSERT INTO `choose` VALUES ('3', '3', '31901208', '31901211', '未认领', '2021-11-28 20:09:47');
 
 -- ----------------------------
 -- Table structure for collection
@@ -43,11 +46,14 @@ CREATE TABLE `collection` (
   `collection_wallid` int(11) NOT NULL COMMENT '收藏的帖子id',
   `collection_time` datetime NOT NULL COMMENT '收藏时间',
   PRIMARY KEY (`collection_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of collection
 -- ----------------------------
+INSERT INTO `collection` VALUES ('1', '31901209', '2', '2021-11-28 20:06:26');
+INSERT INTO `collection` VALUES ('2', '31901208', '1', '2021-11-28 20:06:41');
+INSERT INTO `collection` VALUES ('3', '31901211', '3', '2021-11-28 20:06:47');
 
 -- ----------------------------
 -- Table structure for feedback
@@ -59,13 +65,16 @@ CREATE TABLE `feedback` (
   `feedback_content` varchar(140) NOT NULL COMMENT '反馈正文',
   `feedback_userid` varchar(10) NOT NULL COMMENT '反馈人',
   `feedback_date` datetime NOT NULL COMMENT '反馈时间',
-  `feedback_state` int(11) NOT NULL COMMENT '反馈状态，1未处理，2已经处理',
+  `feedback_state` varchar(11) NOT NULL COMMENT '反馈状态，1未处理，2已经处理',
   PRIMARY KEY (`feedback_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of feedback
 -- ----------------------------
+INSERT INTO `feedback` VALUES ('1', '管理员看过来', '你上当了', '31901209', '2021-11-28 20:04:53', '未处理');
+INSERT INTO `feedback` VALUES ('2', '管理员别看过来', '你上当了', '31901208', '2021-11-28 20:05:12', '未处理');
+INSERT INTO `feedback` VALUES ('3', '管理员你Ma没了', '芜湖', '31901211', '2021-11-28 20:05:31', '未处理');
 
 -- ----------------------------
 -- Table structure for reply
@@ -77,13 +86,16 @@ CREATE TABLE `reply` (
   `reply_content` varchar(20) NOT NULL COMMENT '回复正文',
   `reply_userid` varchar(10) NOT NULL COMMENT '回复的用户id',
   `reply_time` datetime NOT NULL COMMENT '回复时间',
-  `reply_state` int(11) NOT NULL COMMENT '回复状态，1正常2删除',
+  `reply_state` varchar(11) NOT NULL COMMENT '回复状态，1正常2删除',
   PRIMARY KEY (`reply_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of reply
 -- ----------------------------
+INSERT INTO `reply` VALUES ('1', '1', '真不戳', '31901209', '2021-11-28 20:02:20', '正常');
+INSERT INTO `reply` VALUES ('2', '2', '针不戳', '31901211', '2021-11-28 20:03:18', '正常');
+INSERT INTO `reply` VALUES ('3', '3', '牛逼', '31901208', '2021-11-28 20:03:43', '正常');
 
 -- ----------------------------
 -- Table structure for user
@@ -118,16 +130,18 @@ CREATE TABLE `wall` (
   `wall_contenttitle` varchar(10) NOT NULL COMMENT '表白墙标题',
   `wall_time` datetime NOT NULL COMMENT '表白墙发表时间',
   `wall_userid` varchar(10) NOT NULL COMMENT '发表该表白墙的用户',
-  `wall_state` int(10) NOT NULL COMMENT '表白墙状态，1正常2精选3删除',
+  `wall_state` varchar(10) NOT NULL COMMENT '表白墙状态，1正常2精选3删除',
   `wall_good` int(11) NOT NULL COMMENT '表白墙点赞数',
   `wall_collection` int(11) NOT NULL COMMENT '表白墙收藏数',
   `wall_talk` int(11) NOT NULL COMMENT '表白墙评论数',
   `wall_report` int(11) NOT NULL COMMENT '表白墙举报数',
   `wall_to` varchar(10) DEFAULT NULL COMMENT '被表白对象',
   PRIMARY KEY (`wall_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wall
 -- ----------------------------
-INSERT INTO `wall` VALUES ('1', 'wwwwww', '1232123', '2021-11-28 15:43:08', '31901209', '1', '0', '0', '0', '0', 'wwww');
+INSERT INTO `wall` VALUES ('1', '我的最爱', 'oh,my baby', '2021-11-28 15:43:08', '31901209', '正常', '0', '0', '0', '0', 'wlx');
+INSERT INTO `wall` VALUES ('2', '哈哈哈骗你的', '你上当了', '2021-11-28 19:59:25', '31901211', '正常', '0', '0', '0', '0', 'wyb');
+INSERT INTO `wall` VALUES ('3', '呜呼呜呼', '地那是李开复你', '2021-11-28 20:01:00', '31901208', '正常', '0', '0', '0', '0', 'zhj');
