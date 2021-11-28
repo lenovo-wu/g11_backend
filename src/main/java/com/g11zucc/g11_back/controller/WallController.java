@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@RequestMapping("g11zucc/wall")
+@RequestMapping("/wall")
 public class WallController extends  BaseController{
     @Resource
     private IwallService wallService;

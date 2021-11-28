@@ -1,6 +1,7 @@
 package com.g11zucc.g11_back.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.g11zucc.g11_back.common.api.ApiResult;
 import com.g11zucc.g11_back.model.dto.LoginDTO;
 import com.g11zucc.g11_back.model.dto.RegisterDTO;
@@ -52,19 +53,9 @@ public class UserController extends BaseController{
         return ApiResult.success(list.get(list.size()-1)); //返回user表里的最后一条记录
     }
 
-
-/*
-    @GetMapping("/{username}")
-    public ApiResult<Map<String, Object>> getUserByName(@PathVariable("username") String username,
-                                                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Map<String, Object> map = new HashMap<>(16);
-        user user = userService.getUserByUserName(username);
-        Assert.notNull(user, "用户不存在");
-        Page<BmsPost> page = iBmsPostService.page(new Page<>(pageNo, size),
-                new LambdaQueryWrapper<BmsPost>().eq(BmsPost::getUserId, user.getUserId()));
-        map.put("user", user);
-        map.put("topics", page);
-        return ApiResult.success(map);
-    }*/
+    @GetMapping("/list")
+    public ApiResult<List<user>> getList(){
+        List<user> list = userService.list(new QueryWrapper<>());
+        return ApiResult.success(list); //返回user表里的最后一条记录
+    }
 }
