@@ -20,17 +20,17 @@ import java.util.Map;
 public class UserController extends BaseController{
 
     @Resource
-    public IuserService userService;
+    private IuserService userService;
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ApiResult<Map<String, Object>> register(@Valid @RequestBody RegisterDTO dto) {
-        user user = userService.executeRegister(dto);
-        if (ObjectUtils.isEmpty(user)) {
+        user auser = userService.executeRegister(dto);
+        if (ObjectUtils.isEmpty(auser)) {
             return ApiResult.failed("账号注册失败");
         }
         Map<String, Object> map = new HashMap<>(16);
-        map.put("user", user);
+        map.put("user", auser);
         return ApiResult.success(map);
     }
 
@@ -48,7 +48,7 @@ public class UserController extends BaseController{
     @GetMapping("/username")
     public ApiResult<user> getName(){
         List<user> list = userService.list(new LambdaQueryWrapper<user>()
-                .eq(user::getUserId,"31901209")); //查询学号为31901209的学生
+                .eq(user::getUserName,System.getProperty("user.name"))); //查询学号为31901209的学生
         return ApiResult.success(list.get(list.size()-1)); //返回user表里的最后一条记录
     }
 

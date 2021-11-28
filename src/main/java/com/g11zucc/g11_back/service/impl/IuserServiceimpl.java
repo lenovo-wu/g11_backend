@@ -30,13 +30,14 @@ public class IuserServiceimpl extends ServiceImpl<userMapper, user>
     public user executeRegister(RegisterDTO dto) {
         //查询是否有相同用户名的用户
         LambdaQueryWrapper<user> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(user::getUserId, dto.getEmail());
+        wrapper.eq(user::getUserName, dto.getEmail());
         user user = baseMapper.selectOne(wrapper);
         if (!ObjectUtils.isEmpty(user)) {
             ApiAsserts.fail("账号已存在！");
         }
         user addUser = user.builder()
                 .UserId(dto.getEmail())
+                .UserName(dto.getEmail())
                 .UserPwd(MD5Utils.getPwd(dto.getPass()))
                 .UserRegistertime(new Date())
                 .UserState(1)
@@ -52,8 +53,8 @@ public class IuserServiceimpl extends ServiceImpl<userMapper, user>
         String token = null;
         try {
             user user = getUserByUserName(dto.getUsername());
-            //String encodePwd = MD5Utils.getPwd(dto.getPassword());
-            if(!dto.getPassword().equals(user.getUserPwd()))
+            String encodePwd = MD5Utils.getPwd(dto.getPassword());
+            if(!encodePwd.equals(user.getUserPwd()))
             {
                 throw new Exception("密码错误");
             }
