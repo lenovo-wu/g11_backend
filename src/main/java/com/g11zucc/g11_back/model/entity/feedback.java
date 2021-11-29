@@ -55,5 +55,5 @@ public class feedback implements Serializable {
      * 反馈状态，1为未处理，2为已经处理
      */
     @TableField("feedback_state")
-    private int FeedbackState;
+    private String FeedbackState;
 }

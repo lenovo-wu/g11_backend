@@ -8,10 +8,11 @@ import com.g11zucc.g11_back.service.IwallService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IwallServiceimpl extends ServiceImpl<wallMapper, wall> implements IwallService
-{
+public class IwallServiceimpl extends ServiceImpl<wallMapper, wall>  implements IwallService{
+
 
 
 
 
 }
+

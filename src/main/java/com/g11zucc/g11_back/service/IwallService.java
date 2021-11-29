@@ -9,5 +9,5 @@ public interface IwallService extends IService<wall> {
      * 注册功能
      *
      */
-
+//    wall getWallContentByWallUserid(String WallUserid);
 }

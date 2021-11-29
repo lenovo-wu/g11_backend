@@ -55,5 +55,5 @@ public class reply implements Serializable {
      * 回复状态，1为正常2为删除
      */
     @TableField("reply_state")
-    private int ReplyState;
+    private String ReplyState;
 }

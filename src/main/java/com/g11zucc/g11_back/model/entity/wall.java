@@ -56,7 +56,7 @@ public class wall implements Serializable {
      * 表白墙状态，1正常2精选3删除
      */
     @TableField("wall_state")
-    private int WallState;
+    private String WallState;
 
     /**
      * 表白墙点赞数
