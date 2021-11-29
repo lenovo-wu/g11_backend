@@ -85,6 +85,6 @@ public class wall implements Serializable {
     /**
      * 被表白对象
      */
-    @TableField("wall_report")
+    @TableField("wall_to")
     private String WallTo;
 }
