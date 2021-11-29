@@ -81,4 +81,10 @@ public class UserController extends BaseController{
         userService.getBaseMapper().updateById(u);
         return ApiResult.success();
     }
+
+    @DeleteMapping("/delete/{userId}")
+    public ApiResult<?>deleteuser(@PathVariable String userId){
+        userService.getBaseMapper().deleteById(userId);
+        return ApiResult.success();
+    }
 }
