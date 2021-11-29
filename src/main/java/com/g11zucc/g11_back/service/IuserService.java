@@ -22,5 +22,5 @@ public interface IuserService extends IService<user> {
      * 通过用户明查找用户信息
      *
      */
-    user getUserByUserName(String UserName);
+    user getUserByUserId(String UserId);
 }

@@ -30,18 +30,21 @@ public class IuserServiceimpl extends ServiceImpl<userMapper, user>
     public user executeRegister(RegisterDTO dto) {
         //查询是否有相同用户名的用户
         LambdaQueryWrapper<user> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(user::getUserName, dto.getEmail());
+        wrapper.eq(user::getUserId, dto.getStunum());
         user user = baseMapper.selectOne(wrapper);
         if (!ObjectUtils.isEmpty(user)) {
             ApiAsserts.fail("账号已存在！");
         }
+
+
         user addUser = user.builder()
-                .UserId(dto.getEmail())
-                .UserName(dto.getEmail())
+                .UserId(dto.getStunum())
+                .UserName(dto.getOthername())
+                .UserSex(dto.getSex())
                 .UserPwd(MD5Utils.getPwd(dto.getPass()))
                 .UserRegistertime(new Date())
                 .UserState("正常")
-                .UserJurisdiction("正常11")
+                .UserJurisdiction("用户")
                 .build();
         baseMapper.insert(addUser);
 
@@ -52,7 +55,7 @@ public class IuserServiceimpl extends ServiceImpl<userMapper, user>
     public String executeLogin(LoginDTO dto) {
         String token = null;
         try {
-            user user = getUserByUserName(dto.getUsername());
+            user user = getUserByUserId(dto.getUsername());
             String encodePwd = MD5Utils.getPwd(dto.getPassword());
             if(!encodePwd.equals(user.getUserPwd()))
             {
@@ -67,8 +70,8 @@ public class IuserServiceimpl extends ServiceImpl<userMapper, user>
 
 
     @Override
-    public user getUserByUserName(String UserName) {
-        return baseMapper.selectOne(new LambdaQueryWrapper<user>().eq(user::getUserName, UserName));
+    public user getUserByUserId(String UserId) {
+        return baseMapper.selectOne(new LambdaQueryWrapper<user>().eq(user::getUserId, UserId));
     }
 
 }
