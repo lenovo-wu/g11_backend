@@ -55,13 +55,13 @@ public class IuserServiceimpl extends ServiceImpl<userMapper, user>
     public String executeLogin(LoginDTO dto) {
         String token = null;
         try {
-            user user = getUserByUserId(dto.getUsername());
+            user auser = getUserByUserId(dto.getUsername());
             String encodePwd = MD5Utils.getPwd(dto.getPassword());
-            if(!encodePwd.equals(user.getUserPwd()))
+            if(!encodePwd.equals(auser.getUserPwd()))
             {
                 throw new Exception("密码错误");
             }
-            token = JwtUtil.generateToken(String.valueOf(user.getUserName()));
+            token = JwtUtil.generateToken(String.valueOf(auser.getUserId()));///错误发生点：将username传入token，正确的应该是userid传入，因为登陆时记录的是id和密码
         } catch (Exception e) {
             log.warn("用户不存在or密码验证失败=======>{}", dto.getUsername());
         }

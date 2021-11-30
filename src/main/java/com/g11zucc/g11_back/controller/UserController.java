@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import static com.g11zucc.g11_back.JWT.JwtUtil.USER_NAME;
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController{
@@ -45,6 +45,13 @@ public class UserController extends BaseController{
         map.put("token", token);
         return ApiResult.success(map, "登录成功");
     }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ApiResult<user> getUser(@RequestHeader(value = USER_NAME) String userName) {
+        user auser = userService.getUserByUserId(userName);
+        return ApiResult.success(auser);
+    }
+
 
     @GetMapping("/username")
     public ApiResult<user> getName(){
