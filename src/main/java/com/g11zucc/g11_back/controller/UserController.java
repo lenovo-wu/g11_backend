@@ -59,7 +59,7 @@ public class UserController extends BaseController{
     @GetMapping("/username")
     public ApiResult<user> getName(){
         List<user> list = userService.list(new LambdaQueryWrapper<user>()
-                .eq(user::getUserId,"31901211"));//查询学号为31901209的学生
+                .eq(user::getUserId,"31901209"));//查询学号为31901209的学生
         return ApiResult.success(list.get(list.size()-1)); //返回user表里的最后一条记录
     }
 
