@@ -7,10 +7,7 @@ import com.g11zucc.g11_back.common.api.ApiResult;
 import com.g11zucc.g11_back.model.entity.user;
 import com.g11zucc.g11_back.model.entity.wall;
 import com.g11zucc.g11_back.service.IwallService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,5 +31,23 @@ public class WallController extends  BaseController{
         return ApiResult.success(wallPage);
     }
 
+    @GetMapping("/findWallPage1")
+    public ApiResult<?> findPage1(@RequestParam(defaultValue = "1") Integer pageNum,
+                                 @RequestParam(defaultValue = "1") Integer pageSize,
+                                 @RequestParam(defaultValue = "") String search){
+        Page<wall> wallPage=wallService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<wall>lambdaQuery().like(wall::getWallContenttitle, search));
+        return ApiResult.success(wallPage);
+    }
 
+    @PutMapping("/update")
+    public ApiResult<?> update(@RequestBody wall w){
+        wallService.getBaseMapper().updateById(w);
+        return ApiResult.success();
+    }
+
+    @DeleteMapping("/delete/{wallId}")
+    public ApiResult<?>deletewall(@PathVariable int wallId){
+        wallService.getBaseMapper().deleteById(wallId);
+        return ApiResult.success();
+    }
 }
