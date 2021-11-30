@@ -2,6 +2,9 @@ package com.g11zucc.g11_back.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.g11zucc.g11_back.common.api.ApiResult;
 import com.g11zucc.g11_back.model.dto.LoginDTO;
 import com.g11zucc.g11_back.model.dto.RegisterDTO;
@@ -64,5 +67,31 @@ public class UserController extends BaseController{
     public ApiResult<List<user>> getList(){
         List<user> list = userService.list(new QueryWrapper<>());
         return ApiResult.success(list); //返回user表里的最后一条记录
+    }
+
+    @GetMapping("/findPage")
+    public ApiResult<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                                 @RequestParam(defaultValue = "10") Integer pageSize,
+                                 @RequestParam(defaultValue = "") String search){
+        Page<user> userPage=userService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<user>lambdaQuery().like(user::getUserName, search));
+       return ApiResult.success(userPage);
+    }
+
+    @PostMapping("/save")
+    public ApiResult<?> save(@RequestBody user u){
+        userService.getBaseMapper().insert(u);
+        return ApiResult.success();
+    }
+
+    @PutMapping("/update")
+    public ApiResult<?> update(@RequestBody user u){
+        userService.getBaseMapper().updateById(u);
+        return ApiResult.success();
+    }
+
+    @DeleteMapping("/delete/{userId}")
+    public ApiResult<?>deleteuser(@PathVariable String userId){
+        userService.getBaseMapper().deleteById(userId);
+        return ApiResult.success();
     }
 }
