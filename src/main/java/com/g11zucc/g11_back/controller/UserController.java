@@ -94,4 +94,10 @@ public class UserController extends BaseController{
         userService.getBaseMapper().deleteById(userId);
         return ApiResult.success();
     }
+
+    @GetMapping("/get")
+    public ApiResult<?>getuser(@RequestParam(defaultValue = "") String userId){
+        List<user> u=userService.list(new LambdaQueryWrapper<user>().eq(user::getUserId,userId));
+        return ApiResult.success(u);
+    }
 }
