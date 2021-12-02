@@ -10,6 +10,8 @@ import com.g11zucc.g11_back.service.IwallService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -31,6 +33,12 @@ public class WallController extends  BaseController{
         return ApiResult.success(wallPage);
     }
 
+    @PostMapping("/insertWall")
+    public ApiResult<?> save(@RequestBody wall w){
+        w.setWallTime(new Date(System.currentTimeMillis()));
+        wallService.getBaseMapper().insert(w);
+        return ApiResult.success();
+    }
     @GetMapping("/findWallPage1")
     public ApiResult<?> findPage1(@RequestParam(defaultValue = "1") Integer pageNum,
                                  @RequestParam(defaultValue = "1") Integer pageSize,

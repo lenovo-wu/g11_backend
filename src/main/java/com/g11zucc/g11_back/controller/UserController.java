@@ -9,7 +9,9 @@ import com.g11zucc.g11_back.common.api.ApiResult;
 import com.g11zucc.g11_back.model.dto.LoginDTO;
 import com.g11zucc.g11_back.model.dto.RegisterDTO;
 import com.g11zucc.g11_back.model.entity.user;
+import com.g11zucc.g11_back.model.entity.wall;
 import com.g11zucc.g11_back.service.IuserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import static com.g11zucc.g11_back.JWT.JwtUtil.USER_NAME;
 @RestController
+
 @RequestMapping("/user")
 public class UserController extends BaseController{
 
@@ -55,12 +58,19 @@ public class UserController extends BaseController{
         return ApiResult.success(auser);
     }
 
-
-    @GetMapping("/username")
-    public ApiResult<user> getName(){
+    /*返回某id用户的所有信息*/
+    @GetMapping("/getInfo")
+    public ApiResult<user> getInfo(@RequestParam(value= "userid") String userid ){
         List<user> list = userService.list(new LambdaQueryWrapper<user>()
-                .eq(user::getUserId,"31901209"));//查询学号为31901209的学生
-        return ApiResult.success(list.get(list.size()-1)); //返回user表里的最后一条记录
+                .eq(user::getUserId, userid ));
+        return ApiResult.success(list.get(list.size()-1));
+    }
+
+    /*返回某id用户的所有信息*/
+    @GetMapping("/getInfo1")
+    public ApiResult<user> get(@RequestBody user u){
+        user au =userService.getBaseMapper().selectById(u.getUserId());
+        return ApiResult.success(au);
     }
 
     @GetMapping("/list")
@@ -95,9 +105,12 @@ public class UserController extends BaseController{
         return ApiResult.success();
     }
 
-    @GetMapping("/get")
+    @GetMapping("/search")
     public ApiResult<?>getuser(@RequestParam(defaultValue = "") String userId){
         List<user> u=userService.list(new LambdaQueryWrapper<user>().eq(user::getUserId,userId));
         return ApiResult.success(u);
     }
+
+
+
 }
