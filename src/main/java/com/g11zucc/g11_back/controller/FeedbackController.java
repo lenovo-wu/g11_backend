@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.g11zucc.g11_back.common.api.ApiResult;
 import com.g11zucc.g11_back.model.entity.feedback;
 import com.g11zucc.g11_back.model.entity.user;
+import com.g11zucc.g11_back.model.entity.wall;
 import com.g11zucc.g11_back.service.IfeedbackService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 @RestController
 @RequestMapping("/feedback")
@@ -34,6 +36,14 @@ public class FeedbackController extends BaseController{
     @DeleteMapping("/delete/{feedbackId}")
     public ApiResult<?>deleteuser(@PathVariable Integer feedbackId){
         feedbackService.getBaseMapper().deleteById(feedbackId);
+        return ApiResult.success();
+    }
+
+
+    @PostMapping("/insertFeedback")
+    public ApiResult<?> save(@RequestBody feedback fb){
+        fb.setFeedbackTime(new Date(System.currentTimeMillis()));
+        feedbackService.getBaseMapper().insert(fb);
         return ApiResult.success();
     }
 }
