@@ -25,7 +25,7 @@ public class feedback implements Serializable {
      * 主键 反馈id号
      */
     @TableId(value = "feedback_id",type=IdType.AUTO)
-    private Integer id;
+    private Integer FeedbackId;
 
     /**
      * 反馈标题

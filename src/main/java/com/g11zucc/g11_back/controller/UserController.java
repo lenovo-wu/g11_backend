@@ -8,9 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.g11zucc.g11_back.common.api.ApiResult;
 import com.g11zucc.g11_back.model.dto.LoginDTO;
 import com.g11zucc.g11_back.model.dto.RegisterDTO;
-import com.g11zucc.g11_back.model.entity.collection;
 import com.g11zucc.g11_back.model.entity.user;
-import com.g11zucc.g11_back.service.IcollService;
 import com.g11zucc.g11_back.service.IuserService;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +25,6 @@ public class UserController extends BaseController{
 
     @Resource
     private IuserService userService;
-    @Resource
-    private IcollService collService;
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -81,14 +77,6 @@ public class UserController extends BaseController{
        return ApiResult.success(userPage);
     }
 
-    @GetMapping("/colllist")
-    public ApiResult<Page<collection>> list(
-                                        @RequestParam(value = "pageNo", defaultValue = "1")  Integer pageNo,
-                                        @RequestParam(value = "size", defaultValue = "10") Integer pageSize) {
-        Page<collection> list = collService.getList(new Page<>(pageNo, pageSize));
-        return ApiResult.success(list);
-    }
-
     @PostMapping("/save")
     public ApiResult<?> save(@RequestBody user u){
         userService.getBaseMapper().insert(u);
@@ -106,7 +94,4 @@ public class UserController extends BaseController{
         userService.getBaseMapper().deleteById(userId);
         return ApiResult.success();
     }
-
-
-
 }
