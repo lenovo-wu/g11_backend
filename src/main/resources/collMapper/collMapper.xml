@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.g11zucc.g11_back.mapper.collMapper">
+    <resultMap id="coll" type="com.g11zucc.g11_back.model.entity.collection">
+        <id column="collection_id" property="id"/>
+        <result column="collection_userid" property="CollectionUserid"/>
+        <result column="collection_wallid" property="CollectionWallid"/>
+        <result column="collection_time" property="collectionTime"/>
+    </resultMap>
+
+    <select id="selectListAndPage" resultMap="collection">
+        SELECT
+        c.collection_id
+        c.collection_userid
+        c.collection_wallid
+        c.collection_time
+        FROM collection c
+        order by c.collection_time desc
+    </select>
+
+
+
+
+</mapper>
