@@ -10,12 +10,12 @@
 
     <select id="selectListAndPage" resultMap="collection">
         SELECT
-        c.collection_id
-        c.collection_userid
-        c.collection_wallid
-        c.collection_time
-        FROM collection c
-        order by c.collection_time desc
+        collection_id
+        collection_userid
+        collection_wallid
+        collection_time
+        FROM collection
+        order by collection_time desc
     </select>
 
 

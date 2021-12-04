@@ -8,8 +8,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.g11zucc.g11_back.common.api.ApiResult;
 import com.g11zucc.g11_back.model.dto.LoginDTO;
 import com.g11zucc.g11_back.model.dto.RegisterDTO;
-import com.g11zucc.g11_back.model.entity.user;
-import com.g11zucc.g11_back.service.IuserService;
+import com.g11zucc.g11_back.model.entity.*;
+import com.g11zucc.g11_back.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,14 @@ public class UserController extends BaseController{
 
     @Resource
     private IuserService userService;
-
+    @Resource
+    private IcollService collService;
+    @Resource
+    private IwallService wallService;
+    @Resource
+    private IreplyService replyService;
+    @Resource
+    private IchooseService chooseService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ApiResult<Map<String, Object>> register(@Valid @RequestBody RegisterDTO dto) {
@@ -55,6 +64,35 @@ public class UserController extends BaseController{
         return ApiResult.success(auser);
     }
 
+    /*返回某id用户的所有信息*/
+    @GetMapping("/getInfo")
+    public ApiResult<user> getInfo(@RequestParam(value= "userid") String userid ){
+        List<user> list = userService.list(new LambdaQueryWrapper<user>()
+                .eq(user::getUserId, userid ));
+        return ApiResult.success(list.get(list.size()-1));
+    }
+
+    /*返回某id用户的所有信息*/
+    @GetMapping("/getInfo1")
+    public ApiResult<user> get(@RequestBody user u){
+        user au =userService.getBaseMapper().selectById(u.getUserId());
+        return ApiResult.success(au);
+    }
+
+
+    @GetMapping("/colllist")
+    public ApiResult<Page<collection>> getlist(
+                                        @RequestParam(value = "pageNo", defaultValue = "1")  Integer pageNo,
+                                        @RequestParam(value = "size", defaultValue = "10") Integer pageSize) {
+        Page<collection> list = collService.getList(new Page<>(pageNo, pageSize));
+        return ApiResult.success(list);
+    }
+
+    @GetMapping("/search")
+    public ApiResult<?>getuser(@RequestParam(defaultValue = "") String userId){
+        List<user> u=userService.list(new LambdaQueryWrapper<user>().eq(user::getUserId,userId));
+        return ApiResult.success(u);
+    }
 
     @GetMapping("/username")
     public ApiResult<user> getName(){
@@ -69,13 +107,7 @@ public class UserController extends BaseController{
         return ApiResult.success(list); //返回user表里的最后一条记录
     }
 
-    @GetMapping("/findPage")
-    public ApiResult<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
-                                 @RequestParam(defaultValue = "10") Integer pageSize,
-                                 @RequestParam(defaultValue = "") String search){
-        Page<user> userPage=userService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<user>lambdaQuery().like(user::getUserName, search));
-       return ApiResult.success(userPage);
-    }
+
 
     @PostMapping("/save")
     public ApiResult<?> save(@RequestBody user u){
@@ -94,4 +126,83 @@ public class UserController extends BaseController{
         userService.getBaseMapper().deleteById(userId);
         return ApiResult.success();
     }
+
+    @GetMapping("/get")
+    public ApiResult<?>getuser1(@RequestParam(defaultValue = "") String userId){
+        List<user> u=userService.list(new LambdaQueryWrapper<user>().eq(user::getUserId,userId));
+        return ApiResult.success(u);
+    }
+
+    @GetMapping("/{username}")
+    public ApiResult<Map<String, Object>> getUserByName(@PathVariable("username") String username,
+                                                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Map<String, Object> map = new HashMap<>(16);
+        user auser = userService.getUserByUserId(username);
+        Assert.notNull(auser, "用户不存在");
+        Page<wall> page = wallService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<wall>().eq(wall::getWallUserid, auser.getUserId()));
+        Page<reply> page2 = replyService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<reply>().eq(reply::getReplyUserid, auser.getUserId()));
+        Page<choose> page3 = chooseService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<choose>().eq(choose::getChooseUserid, auser.getUserId()));
+        map.put("user", auser);
+        map.put("topics", page);
+        return ApiResult.success(map);
+    }
+    @GetMapping("/reply/{username}")
+    public ApiResult<Map<String, Object>> getUserByNameForReply(@PathVariable("username") String username,
+                                                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Map<String, Object> map = new HashMap<>(16);
+        user auser = userService.getUserByUserId(username);
+        Assert.notNull(auser, "用户不存在");
+        Page<reply> page = replyService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<reply>().eq(reply::getReplyUserid, auser.getUserId()));
+        map.put("user", auser);
+        map.put("topics", page);
+        return ApiResult.success(map);
+    }
+    @GetMapping("/choose/{username}")
+    public ApiResult<Map<String, Object>> getUserByNameForChoose(@PathVariable("username") String username,
+                                                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Map<String, Object> map = new HashMap<>(16);
+        user auser = userService.getUserByUserId(username);
+        Assert.notNull(auser, "用户不存在");
+        Page<choose> page = chooseService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<choose>().eq(choose::getChooseUserid, auser.getUserId()));
+        map.put("user", auser);
+        map.put("topics", page);
+        return ApiResult.success(map);
+    }
+    @GetMapping("/bechoose/{username}")
+    public ApiResult<Map<String, Object>> getUserByNameForBeChoose(@PathVariable("username") String username,
+                                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                                 @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Map<String, Object> map = new HashMap<>(16);
+        user auser = userService.getUserByUserId(username);
+        Assert.notNull(auser, "用户不存在");
+        Page<choose> page = chooseService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<choose>().eq(choose::getChooseBeuserid, auser.getUserId()));
+        map.put("user", auser);
+        map.put("topics", page);
+        return ApiResult.success(map);
+    }
+    @GetMapping("/coll/{username}")
+    public ApiResult<Map<String, Object>> getUserByNameForColl(@PathVariable("username") String username,
+                                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                                 @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Map<String, Object> map = new HashMap<>(16);
+        user auser = userService.getUserByUserId(username);
+        Assert.notNull(auser, "用户不存在");
+        Page<collection> page = collService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<collection>().eq(collection::getCollectionUserid, auser.getUserId()));
+        map.put("user", auser);
+        map.put("topics", page);
+        return ApiResult.success(map);
+    }
+
+
+
 }

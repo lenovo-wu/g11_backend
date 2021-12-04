@@ -30,7 +30,7 @@ public class reply implements Serializable {
     /**
      * 在哪个帖子下面回复
      */
-    @TableField("wallid")
+    @TableField("wall_id")
     private int Wallid;
 
     /**
