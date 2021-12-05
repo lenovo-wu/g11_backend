@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.g11zucc.g11_back.common.api.ApiResult;
+import com.g11zucc.g11_back.model.entity.choose;
 import com.g11zucc.g11_back.model.entity.user;
 import com.g11zucc.g11_back.model.entity.wall;
 import com.g11zucc.g11_back.service.IwallService;
@@ -28,8 +29,8 @@ public class WallController extends  BaseController{
     @GetMapping("/findWallPage")
     public ApiResult<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                                  @RequestParam(defaultValue = "1") Integer pageSize,
-                                 @RequestParam(defaultValue = "") String search){
-        Page<wall> wallPage=wallService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<wall>lambdaQuery().like(wall::getWallUserid, search));
+                                 @RequestParam(defaultValue = "正常") String search){
+        Page<wall> wallPage=wallService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<wall>lambdaQuery().eq(wall::getWallState,search).orderByAsc(wall::getWallTime,wall::getWallId));
         return ApiResult.success(wallPage);
     }
 
@@ -51,6 +52,13 @@ public class WallController extends  BaseController{
     public ApiResult<?> update(@RequestBody wall w){
         wallService.getBaseMapper().updateById(w);
         return ApiResult.success();
+    }
+
+    @PutMapping("/updategood")
+    public ApiResult<?>upgood(@RequestParam(defaultValue = "1") int wallId){
+        int good=wallService.getBaseMapper().selectById(wallId).getWallGood()+1;
+        wallService.getBaseMapper().selectById(wallId).setWallGood(good);
+        return ApiResult.success(good);
     }
 
     @DeleteMapping("/delete/{wallId}")
