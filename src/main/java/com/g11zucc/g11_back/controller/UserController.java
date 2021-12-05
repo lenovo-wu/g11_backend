@@ -10,6 +10,7 @@ import com.g11zucc.g11_back.model.dto.LoginDTO;
 import com.g11zucc.g11_back.model.dto.RegisterDTO;
 import com.g11zucc.g11_back.model.entity.*;
 import com.g11zucc.g11_back.service.*;
+import com.g11zucc.g11_back.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -203,6 +204,18 @@ public class UserController extends BaseController{
         return ApiResult.success(map);
     }
 
+    @GetMapping("/findPage")
+    public ApiResult<?> findPage1(@RequestParam(defaultValue = "1") Integer pageNum,
+                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                  @RequestParam(defaultValue = "") String search){
+        Page<user> userPage=userService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<user>lambdaQuery().like(user::getUserId, search));
+        return ApiResult.success(userPage);
+    }
 
-
+    @PutMapping("/reset")
+    public ApiResult<?> reset(@RequestBody user u){
+        u.setUserPwd(MD5Utils.getPwd("123456"));
+        userService.getBaseMapper().updateById(u);
+        return ApiResult.success();
+    }
 }
