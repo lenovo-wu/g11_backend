@@ -48,8 +48,6 @@ public class UserController extends BaseController{
         return ApiResult.success(map);
     }
 
-
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ApiResult<Map<String, String>> login(@Valid @RequestBody LoginDTO dto) {
         String token = userService.executeLogin(dto);
@@ -120,15 +118,6 @@ public class UserController extends BaseController{
 
     @PutMapping("/update")
     public ApiResult<?> update(@RequestBody user u){
-        userService.getBaseMapper().updateById(u);
-        return ApiResult.success();
-    }
-
-
-
-    @PutMapping("/updatepass")
-    public ApiResult<?> updatepass(@RequestBody user u){
-        u.setUserPwd(MD5Utils.getPwd(u.getUserPwd()));
         userService.getBaseMapper().updateById(u);
         return ApiResult.success();
     }
@@ -229,7 +218,4 @@ public class UserController extends BaseController{
         userService.getBaseMapper().updateById(u);
         return ApiResult.success();
     }
-
-
-
 }
