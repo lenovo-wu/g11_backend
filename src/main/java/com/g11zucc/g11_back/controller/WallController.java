@@ -40,6 +40,7 @@ public class WallController extends  BaseController{
         wallService.getBaseMapper().insert(w);
         return ApiResult.success();
     }
+
     @GetMapping("/findWallPage1")
     public ApiResult<?> findPage1(@RequestParam(defaultValue = "1") Integer pageNum,
                                  @RequestParam(defaultValue = "1") Integer pageSize,
