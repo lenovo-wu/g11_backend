@@ -50,6 +50,14 @@ public class WallController extends  BaseController{
         return ApiResult.success(wallPage);
     }
 
+    @GetMapping("/findHotWallPage")
+    public ApiResult<?> findHotWallPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                                  @RequestParam(defaultValue = "1") Integer pageSize,
+                                  @RequestParam(defaultValue = "正常") String search){
+        Page<wall> wallPage=wallService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<wall>lambdaQuery().eq(wall::getWallState,search).orderByDesc(wall::getWallTalk,wall::getWallId));
+        return ApiResult.success(wallPage);
+    }
+
 
     @PostMapping("/insertWall")
     public ApiResult<?> save(@RequestBody wall w){
