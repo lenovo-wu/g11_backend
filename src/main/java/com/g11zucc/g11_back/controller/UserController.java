@@ -109,7 +109,6 @@ public class UserController extends BaseController{
     }
 
 
-
     @PostMapping("/save")
     public ApiResult<?> save(@RequestBody user u){
         userService.getBaseMapper().insert(u);

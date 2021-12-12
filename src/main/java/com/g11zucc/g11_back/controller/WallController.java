@@ -34,6 +34,23 @@ public class WallController extends  BaseController{
         return ApiResult.success(wallPage);
     }
 
+    @GetMapping("/findWallPage6")
+    public ApiResult<?> findPage6(@RequestParam(defaultValue = "1") Integer pageNum,
+                                 @RequestParam(defaultValue = "1") Integer pageSize,
+                                 @RequestParam(defaultValue = "正常") String search){
+        Page<wall> wallPage=wallService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<wall>lambdaQuery().eq(wall::getWallState,search).orderByDesc(wall::getWallGood,wall::getWallId));
+        return ApiResult.success(wallPage);
+    }
+
+    @GetMapping("/findWallPage9")
+    public ApiResult<?> findPage9(@RequestParam(defaultValue = "1") Integer pageNum,
+                                 @RequestParam(defaultValue = "1") Integer pageSize,
+                                 @RequestParam(defaultValue = "正常") String search){
+        Page<wall> wallPage=wallService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<wall>lambdaQuery().eq(wall::getWallState,search).orderByDesc(wall::getWallCollection,wall::getWallId));
+        return ApiResult.success(wallPage);
+    }
+
+
     @PostMapping("/insertWall")
     public ApiResult<?> save(@RequestBody wall w){
         w.setWallTime(new Date(System.currentTimeMillis()));
@@ -54,12 +71,7 @@ public class WallController extends  BaseController{
         return ApiResult.success();
     }
 
-    @PutMapping("/updategood")
-    public ApiResult<?>upgood(@RequestParam(defaultValue = "1") int wallId){
-        int good=wallService.getBaseMapper().selectById(wallId).getWallGood()+1;
-        wallService.getBaseMapper().selectById(wallId).setWallGood(good);
-        return ApiResult.success(good);
-    }
+
 
     @DeleteMapping("/delete/{wallId}")
     public ApiResult<?>deletewall(@PathVariable int wallId){

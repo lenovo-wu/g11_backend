@@ -31,7 +31,7 @@ public class reply implements Serializable {
      * 在哪个帖子下面回复
      */
     @TableField("wall_id")
-    private int Wallid;
+    private int WallId;
 
     /**
      * 回复正文
