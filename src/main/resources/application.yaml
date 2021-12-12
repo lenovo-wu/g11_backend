@@ -1,3 +1,16 @@
 spring:
   profiles:
     active: dev
+      #邮件发送配置
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    username: 1456034259@qq.com
+    password: hugqhrdwkriqfged
+    properties:
+      mail:
+        stmp:
+          auth: true
+        starttls:
+          enable: true
+          required: true

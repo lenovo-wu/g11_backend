@@ -105,7 +105,7 @@ public class UserController extends BaseController{
     @GetMapping("/list")
     public ApiResult<List<user>> getList(){
         List<user> list = userService.list(new QueryWrapper<>());
-        return ApiResult.success(list); //返回user表里的最后一条记录
+        return ApiResult.success(list);
     }
 
 
@@ -204,7 +204,7 @@ public class UserController extends BaseController{
     }
 
     @GetMapping("/findPage")
-    public ApiResult<?> findPage1(@RequestParam(defaultValue = "1") Integer pageNum,
+    public ApiResult<Page<user>> findPage1(@RequestParam(defaultValue = "1") Integer pageNum,
                                   @RequestParam(defaultValue = "10") Integer pageSize,
                                   @RequestParam(defaultValue = "") String search){
         Page<user> userPage=userService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<user>lambdaQuery().like(user::getUserId, search));
