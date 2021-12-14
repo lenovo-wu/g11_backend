@@ -28,5 +28,10 @@ public class ChooserController extends  BaseController{
         chooseService.getBaseMapper().insert(c);
         return ApiResult.success();
     }
+    @DeleteMapping("/delete/{chooseId}")
+    public ApiResult<?>deletecoll(@PathVariable int chooseId){
+        chooseService.getBaseMapper().deleteById(chooseId);
+        return ApiResult.success();
+    }
 
 }

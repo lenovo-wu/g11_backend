@@ -217,4 +217,29 @@ public class UserController extends BaseController{
         userService.getBaseMapper().updateById(u);
         return ApiResult.success();
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ApiResult<Object> logOut() {
+        return ApiResult.success(null, "注销成功");
+    }
+
+    @GetMapping("/selectonecoll/{wallid}")
+    public ApiResult<wall> SelectOneColl(@PathVariable("wallid")  Integer wallId) {
+
+        List<wall> list = wallService.list(new LambdaQueryWrapper<wall>()
+                .eq(wall::getWallId,wallId));
+        return ApiResult.success(list.get(list.size()-1));
+    }
+    @PutMapping("/updatepass")
+    public ApiResult<?> updatepass(@RequestBody user u){
+        u.setUserPwd(MD5Utils.getPwd(u.getUserPwd()));
+        userService.getBaseMapper().updateById(u);
+        return ApiResult.success();
+    }
+    @PutMapping("/updatesign")
+    public ApiResult<?> updatesign(@RequestBody user u){
+        u.setUserSignature((u.getUserSignature()));
+        userService.getBaseMapper().updateById(u);
+        return ApiResult.success();
+    }
 }

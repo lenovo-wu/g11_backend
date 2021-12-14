@@ -29,4 +29,10 @@ public class CollectionController extends  BaseController{
         return ApiResult.success();
     }
 
+    @DeleteMapping("/delete/{collId}")
+    public ApiResult<?>deletecoll(@PathVariable int collId){
+        collectionService.getBaseMapper().deleteById(collId);
+        return ApiResult.success();
+    }
+
 }

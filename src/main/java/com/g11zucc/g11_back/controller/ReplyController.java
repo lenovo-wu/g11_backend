@@ -41,4 +41,10 @@ public class ReplyController extends BaseController{
         return ApiResult.success(r);
     }
 
+    @DeleteMapping("/delete/{replyId}")
+    public ApiResult<?>deletereply(@PathVariable int replyId){
+        replyService.getBaseMapper().deleteById(replyId);
+        return ApiResult.success();
+    }
+
 }
