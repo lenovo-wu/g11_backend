@@ -46,6 +46,12 @@ public class reply implements Serializable {
     private String ReplyUserid;
 
     /**
+     * 用户昵称
+     */
+    @TableField("reply_username")
+    private String ReplyUsername;
+
+    /**
      * 回复时间
      */
     @TableField(value = "reply_time", fill = FieldFill.INSERT)
