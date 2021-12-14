@@ -230,4 +230,16 @@ public class UserController extends BaseController{
                 .eq(wall::getWallId,wallId));
         return ApiResult.success(list.get(list.size()-1));
     }
+    @PutMapping("/updatepass")
+    public ApiResult<?> updatepass(@RequestBody user u){
+        u.setUserPwd(MD5Utils.getPwd(u.getUserPwd()));
+        userService.getBaseMapper().updateById(u);
+        return ApiResult.success();
+    }
+    @PutMapping("/updatesign")
+    public ApiResult<?> updatesign(@RequestBody user u){
+        u.setUserSignature((u.getUserSignature()));
+        userService.getBaseMapper().updateById(u);
+        return ApiResult.success();
+    }
 }
