@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : g11
+Source Server         : localhost_3306
 Source Server Version : 50556
 Source Host           : localhost:3306
 Source Database       : g11zucc
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50556
 File Encoding         : 65001
 
-Date: 2021-12-12 16:10:23
+Date: 2021-12-14 17:01:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,7 +49,7 @@ CREATE TABLE `collection` (
   `collection_wallid` int(11) NOT NULL COMMENT '收藏的帖子id',
   `collection_time` datetime NOT NULL COMMENT '收藏时间',
   PRIMARY KEY (`collection_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of collection
@@ -63,6 +63,8 @@ INSERT INTO `collection` VALUES ('6', '5', '7', '2021-11-10 22:32:25');
 INSERT INTO `collection` VALUES ('7', '11111111', '1', '2021-10-28 22:37:38');
 INSERT INTO `collection` VALUES ('8', '11111111', '2', '2021-12-01 13:57:00');
 INSERT INTO `collection` VALUES ('9', '11111111', '1', '2021-12-10 15:36:18');
+INSERT INTO `collection` VALUES ('10', '13250604', '9', '2021-12-12 19:05:27');
+INSERT INTO `collection` VALUES ('11', '13250604', '9', '2021-12-12 19:07:25');
 
 -- ----------------------------
 -- Table structure for email
@@ -125,6 +127,15 @@ INSERT INTO `email` VALUES ('31901208@stu.zucc.edu.cn', '713118');
 INSERT INTO `email` VALUES ('31901208@stu.zucc.edu.cn', '808228');
 INSERT INTO `email` VALUES ('31901208@stu.zucc.edu.cn', '847821');
 INSERT INTO `email` VALUES ('31901208@stu.zucc.edu.cn', '407417');
+INSERT INTO `email` VALUES ('1325060469@qq.com', '783196');
+INSERT INTO `email` VALUES ('1325060469@qq.com', '774853');
+INSERT INTO `email` VALUES ('1325060469@qq.com', '744273');
+INSERT INTO `email` VALUES ('1325060469@qq.com', '475809');
+INSERT INTO `email` VALUES ('1325060469@qq.com', '963245');
+INSERT INTO `email` VALUES ('1325060469@qq.com', '338764');
+INSERT INTO `email` VALUES ('1325060469@qq.com', '592940');
+INSERT INTO `email` VALUES ('1325060469@qq.com', '344892');
+INSERT INTO `email` VALUES ('1151763286@qq.com', '639730');
 
 -- ----------------------------
 -- Table structure for feedback
@@ -158,16 +169,20 @@ CREATE TABLE `reply` (
   `reply_userid` varchar(10) NOT NULL COMMENT '回复的用户id',
   `reply_time` datetime NOT NULL COMMENT '回复时间',
   `reply_state` varchar(11) NOT NULL COMMENT '回复状态，1正常2删除',
+  `reply_username` varchar(10) NOT NULL,
   PRIMARY KEY (`reply_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of reply
 -- ----------------------------
-INSERT INTO `reply` VALUES ('1', '1', '真不戳', '31901209', '2021-11-28 20:02:20', '正常');
-INSERT INTO `reply` VALUES ('2', '2', '针不戳', '31901210', '2021-11-28 20:03:18', '正常');
-INSERT INTO `reply` VALUES ('3', '3', '牛逼', '31901211', '2021-11-28 20:03:43', '正常');
-INSERT INTO `reply` VALUES ('4', '4', 'bn', '11111111', '2021-12-04 19:03:53', 'zc');
+INSERT INTO `reply` VALUES ('1', '1', '真不戳', '31901209', '2021-11-28 20:02:20', '正常', '');
+INSERT INTO `reply` VALUES ('2', '2', '针不戳', '31901210', '2021-11-28 20:03:18', '正常', '');
+INSERT INTO `reply` VALUES ('3', '3', '牛逼', '31901211', '2021-11-28 20:03:43', '正常', '');
+INSERT INTO `reply` VALUES ('4', '4', 'bn', '11111111', '2021-12-04 19:03:53', 'zc', '');
+INSERT INTO `reply` VALUES ('5', '9', 'rrdf ', '13250604', '2021-12-12 16:46:23', '正常', '');
+INSERT INTO `reply` VALUES ('6', '9', '水电费', '22222222', '2021-12-14 16:44:39', '正常', '请问');
+INSERT INTO `reply` VALUES ('7', '9', '是否水电费', '22222222', '2021-12-14 16:44:56', '正常', '请问');
 
 -- ----------------------------
 -- Table structure for user
@@ -188,7 +203,6 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('10101010', '12345679', 'defac44447b57f152d14f30cea7a73cb', '2021-12-12 16:03:46', '正常', '男', '用户', '');
 INSERT INTO `user` VALUES ('11111111', '11', '96e79218965eb72c92a549dd5a330112', '2021-11-30 16:16:08', '正常', '男', '用户', '我的我的我的');
 INSERT INTO `user` VALUES ('12345555', '12345679', 'defac44447b57f152d14f30cea7a73cb', '2021-12-12 16:00:38', '正常', '男', '用户', '');
 INSERT INTO `user` VALUES ('12345678', '12345678', '25d55ad283aa400af464c76d713c07ad', '2021-12-12 11:37:35', '正常', '男', '用户', '');
@@ -197,8 +211,9 @@ INSERT INTO `user` VALUES ('12345680', '12345679', 'defac44447b57f152d14f30cea7a
 INSERT INTO `user` VALUES ('20000000', '12345679', 'defac44447b57f152d14f30cea7a73cb', '2021-12-12 15:59:04', '正常', '男', '用户', '');
 INSERT INTO `user` VALUES ('21111111', '21111111', '5992aa1ca5ec11321e6cb588f012fe13', '2021-12-12 12:54:39', '正常', '男', '用户', '');
 INSERT INTO `user` VALUES ('21121111', '21121111', '3a6f4e10ef5a1981e2159da60f4e8c48', '2021-12-12 12:56:32', '正常', '男', '用户', '');
+INSERT INTO `user` VALUES ('22222222', '请问', '1bbd886460827015e5d605ed44252251', '2021-12-14 16:05:34', '正常', '男', '用户', '');
 INSERT INTO `user` VALUES ('31901208', 'WYB', '111111', '2021-11-28 16:04:34', '正常', '男', '管理员', '');
-INSERT INTO `user` VALUES ('31901209', 'Lenovo', '123456', '2021-11-28 16:02:52', '正常', '男', '管理员', '1010');
+INSERT INTO `user` VALUES ('31901209', 'Lenovo', '123456', '2021-11-28 16:02:52', '正常', '男', '管理员', 'update编译通过！');
 INSERT INTO `user` VALUES ('31901211', 'ZHJ', '123456', '2021-11-28 16:04:06', '正常', '男', '管理员', '');
 INSERT INTO `user` VALUES ('33333333', '33333333', 'd27d320c27c3033b7883347d8beca317', '2021-12-12 12:03:47', '正常', '男', '用户', '');
 INSERT INTO `user` VALUES ('45674567', '4567', 'b7bcc76a844978f0681f1c87b286c872', '2021-12-12 13:13:56', '正常', '男', '用户', '');
@@ -224,10 +239,11 @@ CREATE TABLE `wall` (
   `wall_report` int(11) NOT NULL COMMENT '表白墙举报数',
   `wall_to` varchar(10) DEFAULT NULL COMMENT '被表白对象',
   PRIMARY KEY (`wall_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wall
 -- ----------------------------
-INSERT INTO `wall` VALUES ('1', '我的最爱', 'oh,my baby', '2021-11-28 15:43:08', '31901209', '正常', '1', '2', '0', '0', 'wlx');
-INSERT INTO `wall` VALUES ('9', '对象对象对象对象对象', '我的对象', '2021-12-09 22:59:02', '11111111', '正常', '0', '0', '0', '0', '我的对象');
+INSERT INTO `wall` VALUES ('1', '我的最爱', 'oh,my baby', '2021-11-28 15:43:08', '31901209', '正常', '3', '2', '-2', '4', 'wlx');
+INSERT INTO `wall` VALUES ('9', '对象对象对象对象对象', '我的对象', '2021-12-09 22:59:02', '11111111', '正常', '0', '2', '4', '0', '我的对象');
+INSERT INTO `wall` VALUES ('10', 'Test测试', 'test', '2021-12-12 17:20:03', '31901209', '正常', '0', '0', '-1', '1', 'Test');
