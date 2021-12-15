@@ -76,6 +76,8 @@ class ReplyControllerTest {
         }
         System.out.println("getReplyByWallId测试成功！");
     }
+
+    @Test
     void deletereply(){
         Date date = new Date();
         reply r = new reply();
