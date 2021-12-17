@@ -33,9 +33,56 @@ class ReplyControllerTest {
 
     @Autowired
     private IreplyService replyService;
+    @Autowired
+    private IreplyService replyservice;
+
 
     @BeforeEach
     void setUp() {
+    }
+
+    @Test
+    void findReplyPage() {
+        mvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        RequestBuilder request = get("http://127.0.0.1:8000/reply/findReplyPage");
+        try {
+            String response = mvc.perform(request).andReturn().getResponse().getContentAsString();
+            System.out.println(response);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("findPage测试成功！");
+    }
+
+
+    //  插入表
+    @Test
+    void insertReply() {
+        reply r = new reply();
+        r.setReplyTime(new Date(System.currentTimeMillis()));
+        r.setWallId(1);
+        r.setReplyContent("恶作剧的对象是你哦");
+        r.setId(1);
+        r.setReplyState("正常");
+        r.setReplyUserid("31901209");
+        r.setReplyUsername("这是测试");
+        replyservice.getBaseMapper().insert(r);
+        List<reply> result=replyservice.list(new LambdaQueryWrapper<reply>().eq(reply::getReplyUsername,"这是测试"));
+        if(!result.isEmpty())
+            System.out.println("reply插入成功！");
+    }
+
+    @Test
+    void getReplyByWallId() {
+        mvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        RequestBuilder request = get("http://127.0.0.1:8000/reply/get?wallId=1");
+        try {
+            String response = mvc.perform(request).andReturn().getResponse().getContentAsString();
+            System.out.println(response);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("getReplyByWallId测试成功！");
     }
 
     @Test
