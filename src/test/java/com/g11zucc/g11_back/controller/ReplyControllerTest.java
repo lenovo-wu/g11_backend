@@ -42,7 +42,7 @@ class ReplyControllerTest {
     void deletereply(){
         Date date = new Date();
         reply r = new reply();
-        r.setId(108);
+        r.setId(20);
         r.setReplyTime(date);
         r.setReplyUserid("11111011");
         r.setReplyContent("20202020");
@@ -51,13 +51,13 @@ class ReplyControllerTest {
         r.setWallId(1);
         replyService.getBaseMapper().insert(r);
         LambdaQueryWrapper<reply> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(reply::getId, 108);
+        queryWrapper.eq(reply::getId, 20);
         List<reply> result = replyService.list(queryWrapper);
         if(!result.isEmpty()){
             System.out.println("添加评论信息成功！");
             replyService.getBaseMapper().deleteById(r);
             LambdaQueryWrapper<reply> queryWrapper2 = new LambdaQueryWrapper<>();
-            queryWrapper2.eq(reply::getId, 108);
+            queryWrapper2.eq(reply::getId, 20);
             List<reply> result2 = replyService.list(queryWrapper2);
             if(!result2.isEmpty())
                 System.out.println("删除评论信息失败！");
