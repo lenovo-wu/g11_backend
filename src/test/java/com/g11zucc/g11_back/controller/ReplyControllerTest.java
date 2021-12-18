@@ -68,8 +68,9 @@ class ReplyControllerTest {
         r.setReplyUsername("这是测试");
         replyservice.getBaseMapper().insert(r);
         List<reply> result=replyservice.list(new LambdaQueryWrapper<reply>().eq(reply::getReplyUsername,"这是测试"));
-        if(!result.isEmpty())
+        if(!result.isEmpty()){
             System.out.println("reply插入成功！");
+        System.out.println("result is:  "+result+" 1 "+result.get(1));}
     }
 
     @Test
@@ -100,6 +101,7 @@ class ReplyControllerTest {
         LambdaQueryWrapper<reply> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(reply::getId, 20);
         List<reply> result = replyService.list(queryWrapper);
+        //System.out.println("result is:  "+result);
         if(!result.isEmpty()){
             System.out.println("添加评论信息成功！");
             replyService.getBaseMapper().deleteById(r);

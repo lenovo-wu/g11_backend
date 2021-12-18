@@ -171,7 +171,7 @@ public class UserController extends BaseController{
         user auser = userService.getUserByUserId(username);
         Assert.notNull(auser, "用户不存在");
         Page<choose> page = chooseService.page(new Page<>(pageNo, size),
-                new LambdaQueryWrapper<choose>().eq(choose::getChooseUserid, auser.getUserId()));
+                new LambdaQueryWrapper<choose>().eq(choose::getChooseUserid, auser.getUserId()).eq(choose::getChooseState,"未认领"));
         map.put("user", auser);
         map.put("topics", page);
         return ApiResult.success(map);
@@ -184,7 +184,20 @@ public class UserController extends BaseController{
         user auser = userService.getUserByUserId(username);
         Assert.notNull(auser, "用户不存在");
         Page<choose> page = chooseService.page(new Page<>(pageNo, size),
-                new LambdaQueryWrapper<choose>().eq(choose::getChooseBeuserid, auser.getUserId()));
+                new LambdaQueryWrapper<choose>().eq(choose::getChooseBeuserid, auser.getUserId()).eq(choose::getChooseState,"未认领"));
+        map.put("user", auser);
+        map.put("topics", page);
+        return ApiResult.success(map);
+    }
+    @GetMapping("/mychoose/{username}")
+    public ApiResult<Map<String, Object>> getUserByNameForMyChoose(@PathVariable("username") String username,
+                                                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                                   @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Map<String, Object> map = new HashMap<>(16);
+        user auser = userService.getUserByUserId(username);
+        Assert.notNull(auser, "用户不存在");
+        Page<choose> page = chooseService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<choose>().eq(choose::getChooseBeuserid, auser.getUserId()).eq(choose::getChooseState,"已认领"));
         map.put("user", auser);
         map.put("topics", page);
         return ApiResult.success(map);
