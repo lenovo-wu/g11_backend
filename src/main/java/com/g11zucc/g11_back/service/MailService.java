@@ -42,9 +42,9 @@ public class MailService extends ServiceImpl<emailMapper, email> implements Iema
 
 
     public email executeInsertEmail(EmailDTO dto) {
-
+        dto.setStunum(dto.getStunum()+"@stu.zucc.edu.cn");
         email addEmail = email.builder()
-                .email(dto.getEmail())
+                .email(dto.getStunum())
                 .build();
         baseMapper.insert(addEmail);
 
@@ -52,9 +52,8 @@ public class MailService extends ServiceImpl<emailMapper, email> implements Iema
     }
 
     public email executeStoreCode(int cod,EmailDTO dto) {
-
         email addCode = email.builder()
-                .email(dto.getEmail())
+                .email(dto.getStunum())
                 .code(cod)
                 .build();
         baseMapper.insert(addCode);

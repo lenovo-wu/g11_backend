@@ -31,11 +31,14 @@ public class MailController {
 
         RestResponse restResponse = new RestResponse();
         //email aemail = mailService.executeInsertEmail(dto);
-        log.info("进入方法getCheckCode:"+dto.getEmail().toString());
+
         int x = new Random().nextInt(899999) + 100000;
+        dto.setStunum(dto.getStunum()+"@stu.zucc.edu.cn");
+        log.info("进入方法getCheckCode:"+dto.getStunum().toString());
         email bemail = mailService.executeStoreCode(x,dto);
         String checkCode = String.valueOf(x);
         String message = "您的注册验证码为："+checkCode;
+        log.info("进入方法getCheckCode:"+bemail.getEmail().toString());
         try {
             mailService.sendSimpleMail(bemail.getEmail(), "注册验证码", message);
         }catch (Exception e){

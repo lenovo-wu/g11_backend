@@ -51,8 +51,16 @@ public class UserController extends BaseController{
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ApiResult<Map<String, String>> login(@Valid @RequestBody LoginDTO dto) {
         String token = userService.executeLogin(dto);
+
+        LambdaQueryWrapper<user> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(user::getUserId,dto.getUsername());
+        List<user> result = userService.list(queryWrapper);
+
         if (ObjectUtils.isEmpty(token)) {
             return ApiResult.failed("账号密码错误");
+        }
+        if (!result.get(0).getUserState().equals("正常")) {
+            return ApiResult.failed("该用户已封禁");
         }
         Map<String, String> map = new HashMap<>(16);
         map.put("token", token);
