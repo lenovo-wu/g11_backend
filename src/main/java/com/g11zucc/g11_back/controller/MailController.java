@@ -33,7 +33,9 @@ public class MailController {
         //email aemail = mailService.executeInsertEmail(dto);
 
         int x = new Random().nextInt(899999) + 100000;
+        if(dto.getStunum().charAt(0)>'0'&&dto.getStunum().charAt(0)<'9')
         dto.setStunum(dto.getStunum()+"@stu.zucc.edu.cn");
+        else dto.setStunum((dto.getStunum()+"@zucc.edu.cn"));
         log.info("进入方法getCheckCode:"+dto.getStunum().toString());
         email bemail = mailService.executeStoreCode(x,dto);
         String checkCode = String.valueOf(x);
