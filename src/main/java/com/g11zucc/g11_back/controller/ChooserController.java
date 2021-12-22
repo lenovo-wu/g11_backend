@@ -25,8 +25,19 @@ public class ChooserController extends  BaseController{
     @PostMapping("/insertChoose")
     public ApiResult<?> save(@RequestBody choose c){
         c.setChooseTime(new Date(System.currentTimeMillis()));
-        chooseService.getBaseMapper().insert(c);
-        return ApiResult.success();
+        LambdaQueryWrapper<choose> lanwrapper = new LambdaQueryWrapper<>();
+        lanwrapper.eq(choose::getChooseUserid,c.getChooseUserid())
+                .eq(choose::getChooseBeuserid,c.getChooseBeuserid()
+                );
+        List<choose> list=null;
+        list= chooseService.list(lanwrapper);
+        if(list.size()==0){
+            chooseService.getBaseMapper().insert(c);
+            return ApiResult.success();
+        }
+        else{
+            return ApiResult.failed("重复认领！");
+        }
     }
     @DeleteMapping("/delete/{chooseId}")
     public ApiResult<?>deletecoll(@PathVariable int chooseId){
