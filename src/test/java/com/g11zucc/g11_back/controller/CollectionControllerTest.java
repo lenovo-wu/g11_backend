@@ -28,6 +28,9 @@ class CollectionControllerTest {
     @Autowired
     private IcollService collectionservice;
 
+    @Autowired
+    private IcollService collService;
+
 
     @BeforeEach
     void setUp() {
@@ -43,10 +46,34 @@ class CollectionControllerTest {
         c.setCollectionWallid("5");
         c.setCollectionTime(new Date(System.currentTimeMillis()));
         collectionservice.getBaseMapper().insert(c);
-        List<collection> result=collectionservice.list(new LambdaQueryWrapper<collection>().eq(collection::getCollectionUserid,"31901209").eq(collection::getCollectionWallid,5));
-        if(!result.isEmpty())
+        List<collection> result = collectionservice.list(new LambdaQueryWrapper<collection>().eq(collection::getCollectionUserid, "31901209").eq(collection::getCollectionWallid, 5));
+        if (!result.isEmpty())
             System.out.println("reply插入成功！");
     }
 
+    @Test
+    void deletecoll() {
+        Date date = new Date();
+        collection c = new collection();
+        c.setId(18);
+        c.setCollectionWallid("1");
+        c.setCollectionTime(date);
+        c.setCollectionUserid("11111111");
+        collService.getBaseMapper().insert(c);
+        LambdaQueryWrapper<collection> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(collection::getId, 18);
+        List<collection> result = collService.list(queryWrapper);
+        if (!result.isEmpty()) {
+            System.out.println("添加收藏信息成功！");
+            collService.getBaseMapper().deleteById(c);
+            LambdaQueryWrapper<collection> queryWrapper2 = new LambdaQueryWrapper<>();
+            queryWrapper2.eq(collection::getId, 18);
+            List<collection> result2 = collService.list(queryWrapper2);
+            if (!result2.isEmpty())
+                System.out.println("删除收藏信息失败！");
+            else System.out.println("删除收藏信息成功！");
+        } else System.out.println("添加收藏信息失败！");
 
+    }
 }
+    

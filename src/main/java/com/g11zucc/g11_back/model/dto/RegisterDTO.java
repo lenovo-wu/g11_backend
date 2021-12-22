@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class RegisterDTO {
     @NotEmpty(message = "请输入您的学号")
-    @Length(min = 8, max = 8,message = "学号格式不正确")
+    @Length(min = 4, max = 8,message = "学号格式不正确")
     private String stunum;
 
     @NotEmpty(message = "请输入密码")
@@ -26,7 +26,7 @@ public class RegisterDTO {
     @NotEmpty(message = "请选择性别")
     private String sex;
 
-    @NotEmpty(message = "请输入验证码")
-    @Length(min = 4, max = 4, message = "验证码不正确")
-    private String name;
+
+
+    private String code;
 }
