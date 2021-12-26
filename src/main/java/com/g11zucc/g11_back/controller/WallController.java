@@ -30,7 +30,7 @@ public class WallController extends  BaseController{
     public ApiResult<?> findPage(@RequestParam(defaultValue = "1") Integer pageNum,
                                  @RequestParam(defaultValue = "1") Integer pageSize,
                                  @RequestParam(defaultValue = "正常") String search){
-        Page<wall> wallPage=wallService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<wall>lambdaQuery().eq(wall::getWallState,search).orderByAsc(wall::getWallTime,wall::getWallId));
+        Page<wall> wallPage=wallService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<wall>lambdaQuery().eq(wall::getWallState,search).orderByDesc(wall::getWallTime,wall::getWallId));
         return ApiResult.success(wallPage);
     }
 
