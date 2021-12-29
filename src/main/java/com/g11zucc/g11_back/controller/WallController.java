@@ -87,4 +87,13 @@ public class WallController extends  BaseController{
         wallService.getBaseMapper().deleteById(wallId);
         return ApiResult.success();
     }
+
+    /*获取指定的表白墙*/
+    @GetMapping("/selectonecoll/{wallid}")
+    public ApiResult<wall> SelectOneColl(@PathVariable("wallid")  Integer wallId) {
+
+        List<wall> list = wallService.list(new LambdaQueryWrapper<wall>()
+                .eq(wall::getWallId,wallId));
+        return ApiResult.success(list.get(list.size()-1));
+    }
 }

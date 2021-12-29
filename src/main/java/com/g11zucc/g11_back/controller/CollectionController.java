@@ -10,18 +10,29 @@ import com.g11zucc.g11_back.model.entity.user;
 import com.g11zucc.g11_back.model.entity.collection;
 import com.g11zucc.g11_back.model.entity.wall;
 import com.g11zucc.g11_back.service.IcollService;
+import com.g11zucc.g11_back.service.IuserService;
+import com.g11zucc.g11_back.service.IwallService;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.xml.crypto.Data;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/collection")
 public class CollectionController extends  BaseController{
     @Resource
     private IcollService collectionService;
+    @Resource
+    private IwallService wallService;
+    @Resource
+    private IuserService userService;
+    @Resource
+    private IcollService collService;
 
     @PostMapping("/insertCollection")
     public ApiResult<?> save(@RequestBody collection c){
@@ -45,5 +56,21 @@ public class CollectionController extends  BaseController{
         collectionService.getBaseMapper().deleteById(collId);
         return ApiResult.success();
     }
+
+    /*获取当前用户收藏*/
+    @GetMapping("/coll/{username}")
+    public ApiResult<Map<String, Object>> getUserByNameForColl(@PathVariable("username") String username,
+                                                               @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                               @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Map<String, Object> map = new HashMap<>(16);
+        user auser = userService.getUserByUserId(username);
+        Assert.notNull(auser, "用户不存在");
+        Page<collection> page = collService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<collection>().eq(collection::getCollectionUserid, auser.getUserId()));
+        map.put("user", auser);
+        map.put("topics", page);
+        return ApiResult.success(map);
+    }
+
 
 }

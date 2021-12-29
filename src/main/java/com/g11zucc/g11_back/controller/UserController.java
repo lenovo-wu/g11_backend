@@ -36,7 +36,7 @@ public class UserController extends BaseController{
     private IreplyService replyService;
     @Resource
     private IchooseService chooseService;
-
+    /*注册*/
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ApiResult<Map<String, Object>> register(@Valid @RequestBody RegisterDTO dto) {
         user auser = userService.executeRegister(dto);
@@ -47,7 +47,7 @@ public class UserController extends BaseController{
         map.put("user", auser);
         return ApiResult.success(map);
     }
-
+    /*登录*/
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ApiResult<Map<String, String>> login(@Valid @RequestBody LoginDTO dto) {
         String token = userService.executeLogin(dto);
@@ -66,13 +66,11 @@ public class UserController extends BaseController{
         map.put("token", token);
         return ApiResult.success(map, "登录成功");
     }
-
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ApiResult<user> getUser(@RequestHeader(value = USER_NAME) String userName) {
         user auser = userService.getUserByUserId(userName);
         return ApiResult.success(auser);
     }
-
     /*返回某id用户的所有信息*/
     @GetMapping("/getInfo")
     public ApiResult<user> getInfo(@RequestParam(value= "userid") String userid ){
@@ -80,15 +78,12 @@ public class UserController extends BaseController{
                 .eq(user::getUserId, userid ));
         return ApiResult.success(list.get(list.size()-1));
     }
-
     /*返回某id用户的所有信息*/
     @GetMapping("/getInfo1")
     public ApiResult<user> get(@RequestBody user u){
         user au =userService.getBaseMapper().selectById(u.getUserId());
         return ApiResult.success(au);
     }
-
-
     @GetMapping("/colllist")
     public ApiResult<Page<collection>> getlist(
                                         @RequestParam(value = "pageNo", defaultValue = "1")  Integer pageNo,
@@ -96,45 +91,37 @@ public class UserController extends BaseController{
         Page<collection> list = collService.getList(new Page<>(pageNo, pageSize));
         return ApiResult.success(list);
     }
-
     @GetMapping("/search")
     public ApiResult<?>getuser(@RequestParam(defaultValue = "") String userId){
         List<user> u=userService.list(new LambdaQueryWrapper<user>().eq(user::getUserId,userId));
         return ApiResult.success(u);
     }
-
     @GetMapping("/username")
     public ApiResult<user> getName(){
         List<user> list = userService.list(new LambdaQueryWrapper<user>()
                 .eq(user::getUserName,System.getProperty("user.id"))); //查询学号为31901209的学生
         return ApiResult.success(list.get(list.size()-1)); //返回user表里的最后一条记录
     }
-
     @GetMapping("/list")
     public ApiResult<List<user>> getList(){
         List<user> list = userService.list(new QueryWrapper<>());
         return ApiResult.success(list);
     }
-
-
     @PostMapping("/save")
     public ApiResult<?> save(@RequestBody user u){
         userService.getBaseMapper().insert(u);
         return ApiResult.success();
     }
-
     @PutMapping("/update")
     public ApiResult<?> update(@RequestBody user u){
         userService.getBaseMapper().updateById(u);
         return ApiResult.success();
     }
-
     @DeleteMapping("/delete/{userId}")
     public ApiResult<?>deleteuser(@PathVariable String userId){
         userService.getBaseMapper().deleteById(userId);
         return ApiResult.success();
     }
-
     @GetMapping("/get")
     public ApiResult<?>getuser1(@RequestParam(defaultValue = "") String userId){
         List<user> u=userService.list(new LambdaQueryWrapper<user>().eq(user::getUserId,userId));
@@ -158,72 +145,6 @@ public class UserController extends BaseController{
         map.put("topics", page);
         return ApiResult.success(map);
     }
-    @GetMapping("/reply/{username}")
-    public ApiResult<Map<String, Object>> getUserByNameForReply(@PathVariable("username") String username,
-                                                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Map<String, Object> map = new HashMap<>(16);
-        user auser = userService.getUserByUserId(username);
-        Assert.notNull(auser, "用户不存在");
-        Page<reply> page = replyService.page(new Page<>(pageNo, size),
-                new LambdaQueryWrapper<reply>().eq(reply::getReplyUserid, auser.getUserId()));
-        map.put("user", auser);
-        map.put("topics", page);
-        return ApiResult.success(map);
-    }
-    @GetMapping("/choose/{username}")
-    public ApiResult<Map<String, Object>> getUserByNameForChoose(@PathVariable("username") String username,
-                                                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Map<String, Object> map = new HashMap<>(16);
-        user auser = userService.getUserByUserId(username);
-        Assert.notNull(auser, "用户不存在");
-        Page<choose> page = chooseService.page(new Page<>(pageNo, size),
-                new LambdaQueryWrapper<choose>().eq(choose::getChooseUserid, auser.getUserId()).eq(choose::getChooseState,"未认领"));
-        map.put("user", auser);
-        map.put("topics", page);
-        return ApiResult.success(map);
-    }
-    @GetMapping("/bechoose/{username}")
-    public ApiResult<Map<String, Object>> getUserByNameForBeChoose(@PathVariable("username") String username,
-                                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                                                 @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Map<String, Object> map = new HashMap<>(16);
-        user auser = userService.getUserByUserId(username);
-        Assert.notNull(auser, "用户不存在");
-        Page<choose> page = chooseService.page(new Page<>(pageNo, size),
-                new LambdaQueryWrapper<choose>().eq(choose::getChooseBeuserid, auser.getUserId()).eq(choose::getChooseState,"未认领"));
-        map.put("user", auser);
-        map.put("topics", page);
-        return ApiResult.success(map);
-    }
-    @GetMapping("/mychoose/{username}")
-    public ApiResult<Map<String, Object>> getUserByNameForMyChoose(@PathVariable("username") String username,
-                                                                   @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                                                   @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Map<String, Object> map = new HashMap<>(16);
-        user auser = userService.getUserByUserId(username);
-        Assert.notNull(auser, "用户不存在");
-        Page<choose> page = chooseService.page(new Page<>(pageNo, size),
-                new LambdaQueryWrapper<choose>().eq(choose::getChooseBeuserid, auser.getUserId()).eq(choose::getChooseState,"已认领"));
-        map.put("user", auser);
-        map.put("topics", page);
-        return ApiResult.success(map);
-    }
-    @GetMapping("/coll/{username}")
-    public ApiResult<Map<String, Object>> getUserByNameForColl(@PathVariable("username") String username,
-                                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                                                 @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        Map<String, Object> map = new HashMap<>(16);
-        user auser = userService.getUserByUserId(username);
-        Assert.notNull(auser, "用户不存在");
-        Page<collection> page = collService.page(new Page<>(pageNo, size),
-                new LambdaQueryWrapper<collection>().eq(collection::getCollectionUserid, auser.getUserId()));
-        map.put("user", auser);
-        map.put("topics", page);
-        return ApiResult.success(map);
-    }
-
     @GetMapping("/findPage")
     public ApiResult<Page<user>> findPage1(@RequestParam(defaultValue = "1") Integer pageNum,
                                   @RequestParam(defaultValue = "10") Integer pageSize,
@@ -231,32 +152,26 @@ public class UserController extends BaseController{
         Page<user> userPage=userService.getBaseMapper().selectPage(new Page<>(pageNum,pageSize), Wrappers.<user>lambdaQuery().like(user::getUserId, search));
         return ApiResult.success(userPage);
     }
-
+    /*管理员重置密码*/
     @PutMapping("/reset")
     public ApiResult<?> reset(@RequestBody user u){
         u.setUserPwd(MD5Utils.getPwd("123456"));
         userService.getBaseMapper().updateById(u);
         return ApiResult.success();
     }
-
+    /*退出登录*/
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ApiResult<Object> logOut() {
         return ApiResult.success(null, "注销成功");
     }
-
-    @GetMapping("/selectonecoll/{wallid}")
-    public ApiResult<wall> SelectOneColl(@PathVariable("wallid")  Integer wallId) {
-
-        List<wall> list = wallService.list(new LambdaQueryWrapper<wall>()
-                .eq(wall::getWallId,wallId));
-        return ApiResult.success(list.get(list.size()-1));
-    }
+    /*修改密码*/
     @PutMapping("/updatepass")
     public ApiResult<?> updatepass(@RequestBody user u){
         u.setUserPwd(MD5Utils.getPwd(u.getUserPwd()));
         userService.getBaseMapper().updateById(u);
         return ApiResult.success();
     }
+    /*修改个性签名*/
     @PutMapping("/updatesign")
     public ApiResult<?> updatesign(@RequestBody user u){
         u.setUserSignature((u.getUserSignature()));

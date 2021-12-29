@@ -8,16 +8,23 @@ import com.g11zucc.g11_back.model.entity.user;
 import com.g11zucc.g11_back.model.entity.reply;
 import com.g11zucc.g11_back.model.entity.wall;
 import com.g11zucc.g11_back.service.IreplyService;
+import com.g11zucc.g11_back.service.IuserService;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/reply")
 public class ReplyController extends BaseController{
     @Resource
     private IreplyService replyService;
+    @Resource
+    private IuserService userService;
 
     @GetMapping("/get")
     public ApiResult<?>getreplybywallid(@RequestParam(defaultValue = "") String wallId){
@@ -46,5 +53,18 @@ public class ReplyController extends BaseController{
         replyService.getBaseMapper().deleteById(replyId);
         return ApiResult.success();
     }
-
+    /*获取当前用户评论*/
+    @GetMapping("/reply/{username}")
+    public ApiResult<Map<String, Object>> getUserByNameForReply(@PathVariable("username") String username,
+                                                                @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                                                @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        Map<String, Object> map = new HashMap<>(16);
+        user auser = userService.getUserByUserId(username);
+        Assert.notNull(auser, "用户不存在");
+        Page<reply> page = replyService.page(new Page<>(pageNo, size),
+                new LambdaQueryWrapper<reply>().eq(reply::getReplyUserid, auser.getUserId()));
+        map.put("user", auser);
+        map.put("topics", page);
+        return ApiResult.success(map);
+    }
 }
